@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import '../global.css';
 import 'expo-dev-client';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -39,6 +40,7 @@ export default function RootLayout() {
               <Stack screenOptions={SCREEN_OPTIONS}>
                 <Stack.Screen name="index" options={INDEX_OPTIONS} />
                 <Stack.Screen name="modal" options={MODAL_OPTIONS} />
+                <Stack.Screen name="allbooks" options={ALLBOOKS_OPTIONS} />
               </Stack>
             </NavThemeProvider>
           </ActionSheetProvider>
@@ -56,7 +58,13 @@ const SCREEN_OPTIONS = {
 
 const INDEX_OPTIONS = {
   headerLargeTitle: true,
-  title: 'NativeWindUI',
+  title: 'ReadAI',
+  headerRight: () => <SettingsIcon />,
+} as const;
+
+const ALLBOOKS_OPTIONS = {
+  headerLargeTitle: true,
+  title: 'All Books',
   headerRight: () => <SettingsIcon />,
 } as const;
 

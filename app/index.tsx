@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { LegendList } from '@legendapp/list';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Button, useHeaderHeight } from '@react-navigation/elements';
 import { Icon } from '@roninoss/icons';
+import { Link } from 'expo-router'; // Link bileşenini ekleyin
 import * as StoreReview from 'expo-store-review';
 import { cssInterop } from 'nativewind';
 import * as React from 'react';
@@ -16,6 +19,7 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -49,19 +53,31 @@ export default function Screen() {
     : COMPONENTS;
 
   return (
-    <LegendList
-      contentInsetAdjustmentBehavior="automatic"
-      keyboardShouldPersistTaps="handled"
-      data={data}
-      estimatedItemSize={200}
-      contentContainerClassName="py-4 android:pb-12"
-      extraData={searchValue}
-      keyExtractor={keyExtractor}
-      ItemSeparatorComponent={renderItemSeparator}
-      renderItem={renderItem}
-      ListEmptyComponent={COMPONENTS.length === 0 ? ListEmptyComponent : undefined}
-      recycleItems
-    />
+    <SafeAreaView style={{ flex: 1 }}>
+      {/* All Books Button */}
+      <View style={{ padding: 16 }}>
+        <Link href="/allbooks" style={{ backgroundColor: '#007bff', padding: 10, borderRadius: 5 }}>
+          <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>
+            Go to All Books
+          </Text>
+        </Link>
+      </View>
+
+      {/* LegendList */}
+      <LegendList
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardShouldPersistTaps="handled"
+        data={data}
+        estimatedItemSize={200}
+        contentContainerClassName="py-4 android:pb-12"
+        extraData={searchValue}
+        keyExtractor={keyExtractor}
+        ItemSeparatorComponent={renderItemSeparator}
+        renderItem={renderItem}
+        ListEmptyComponent={COMPONENTS.length === 0 ? ListEmptyComponent : undefined}
+        recycleItems
+      />
+    </SafeAreaView>
   );
 }
 
@@ -73,7 +89,7 @@ function ListEmptyComponent() {
   const height = dimensions.height - headerHeight - insets.bottom - insets.top;
 
   return (
-    <View style={{ height }} className="flex-1 items-center justify-center gap-1 px-12">
+    <SafeAreaView style={{ height }} className="flex-1 items-center justify-center gap-1 px-12">
       <Icon name="file-plus-outline" size={42} color={colors.grey} />
       <Text variant="title3" className="pb-1 text-center font-semibold">
         No Components Installed
@@ -88,7 +104,7 @@ function ListEmptyComponent() {
         </Text>
         {' website.'}
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -128,26 +144,78 @@ const COMPONENTS: ComponentItem[] = [
     name: 'George Orwell - 1984',
     component: function TextExample() {
       return (
-        <View className="flex-row gap-2">
-          <TouchableOpacity
-            onPress={() => Alert.alert('Resme tıklandı!')}
-          >
+        <View className="flex-row gap-1">
+          <TouchableOpacity onPress={() => Alert.alert('Resme tıklandı!')}>
             <Image
-            source={{ uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200' }}
-            style={{ width: 100, height: 100 }}
-          />
+              source={{
+                uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
+              }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
           </TouchableOpacity>
-          
-          
-          <Text variant="body" className="text-center">
-            Kitap bilgileri
-          </Text>
-          
+
+          <Text> 1984</Text>
         </View>
       );
     },
   },
-  
+  {
+    name: 'Mustafa Kemal Atatürk - Nutuk',
+    component: function TextExample() {
+      return (
+        <View className="flex-row gap-2">
+          <TouchableOpacity onPress={() => Alert.alert('Resme tıklandı!')}>
+            <Image
+              source={{
+                uri: 'https://img.kitapyurdu.com/v1/getImage/fn:4060202/wh:true/wi:800',
+              }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
+          </TouchableOpacity>
+
+          <Text> Nutuk </Text>
+        </View>
+      );
+    },
+  },
+  {
+    name: 'Daniel Kahneman - Thinking, Fast and Slow',
+    component: function TextExample() {
+      return (
+        <View className="flex-row gap-2">
+            <TouchableOpacity onPress={() => Alert.alert('Resme tıklandı!')}>
+            <Image
+              source={{
+              uri: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1317793965i/11468377.jpg',
+              }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
+            </TouchableOpacity>
+
+          <Text> Thinking, Fast and Slow </Text>
+        </View>
+      );
+    },
+  },
+  {
+    name: 'Atomic Habits - James Clear',
+    component: function TextExample() {
+      return (
+        <View className="flex-row gap-2">
+            <TouchableOpacity onPress={() => Alert.alert('Resme tıklandı!')}>
+            <Image
+              source={{
+              uri: 'https://m.media-amazon.com/images/I/81ANaVZk5LL._AC_UF1000,1000_QL80_.jpg',
+              }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
+            </TouchableOpacity>
+
+          <Text> Atomic Habits </Text>
+        </View>
+      );
+    },
+  },
   {
     name: 'Picker',
     component: function PickerExample() {
@@ -155,7 +223,6 @@ const COMPONENTS: ComponentItem[] = [
       const [picker, setPicker] = React.useState('blue');
       return (
         <Picker selectedValue={picker} onValueChange={(itemValue) => setPicker(itemValue)}>
-          
           <PickerItem
             label="Red"
             value="red"
