@@ -1,6 +1,6 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { LegendList } from '@legendapp/list';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { Button, useHeaderHeight } from '@react-navigation/elements';
 import { Icon } from '@roninoss/icons';
 import * as StoreReview from 'expo-store-review';
 import { cssInterop } from 'nativewind';
@@ -14,6 +14,8 @@ import {
   useWindowDimensions,
   View,
   Alert,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -123,12 +125,37 @@ let hasRequestedReview = false;
 
 const COMPONENTS: ComponentItem[] = [
   {
+    name: 'George Orwell - 1984',
+    component: function TextExample() {
+      return (
+        <View className="flex-row gap-2">
+          <TouchableOpacity
+            onPress={() => Alert.alert('Resme tıklandı!')}
+          >
+            <Image
+            source={{ uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200' }}
+            style={{ width: 100, height: 100 }}
+          />
+          </TouchableOpacity>
+          
+          
+          <Text variant="body" className="text-center">
+            Kitap bilgileri
+          </Text>
+          
+        </View>
+      );
+    },
+  },
+  
+  {
     name: 'Picker',
     component: function PickerExample() {
       const { colors } = useColorScheme();
       const [picker, setPicker] = React.useState('blue');
       return (
         <Picker selectedValue={picker} onValueChange={(itemValue) => setPicker(itemValue)}>
+          
           <PickerItem
             label="Red"
             value="red"
