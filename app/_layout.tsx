@@ -15,10 +15,20 @@ import { cn } from '~/lib/cn';
 import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { NAV_THEME } from '~/theme';
 
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
+
+//bura napiyor bilmiyoruz
+const StackLayout = () => {
+  return (
+    <Stack> 
+      <Stack.Screen name="(tabs)" options={{ title: "aa", headerShown: false}} />
+    </Stack>
+  );
+};
 
 export default function RootLayout() {
   useInitialAndroidBarSync();
@@ -40,7 +50,8 @@ export default function RootLayout() {
               <Stack screenOptions={SCREEN_OPTIONS}>
                 <Stack.Screen name="index" options={INDEX_OPTIONS} />
                 <Stack.Screen name="modal" options={MODAL_OPTIONS} />
-                <Stack.Screen name="allbooks" options={ALLBOOKS_OPTIONS} />
+                <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
+                <Stack.Screen name="library" options={LIBRARY_OPTIONS} />
               </Stack>
             </NavThemeProvider>
           </ActionSheetProvider>
@@ -62,9 +73,15 @@ const INDEX_OPTIONS = {
   headerRight: () => <SettingsIcon />,
 } as const;
 
-const ALLBOOKS_OPTIONS = {
+const TABS_OPTIONS = {
   headerLargeTitle: true,
-  title: 'All Books',
+  title: 'ReadAI',
+  headerRight: () => <SettingsIcon />,
+} as const;
+
+const LIBRARY_OPTIONS = {
+  headerLargeTitle: true,
+  title: 'aLL bS',
   headerRight: () => <SettingsIcon />,
 } as const;
 
