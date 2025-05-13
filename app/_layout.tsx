@@ -52,6 +52,7 @@ export default function RootLayout() {
                 <Stack.Screen name="modal" options={MODAL_OPTIONS} />
                 <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
                 <Stack.Screen name="library" options={LIBRARY_OPTIONS} />
+                <Stack.Screen name="(pages)/pdfscreen" options={{headerShown:false}} />
               </Stack>
             </NavThemeProvider>
           </ActionSheetProvider>
@@ -84,6 +85,7 @@ const LIBRARY_OPTIONS = {
   title: 'aLL bS',
   headerRight: () => <SettingsIcon />,
 } as const;
+
 
 function SettingsIcon() {
   const { colors } = useColorScheme();

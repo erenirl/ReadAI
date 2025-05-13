@@ -95,7 +95,13 @@ function ListEmptyComponent() {
   );
 }
 
-type ComponentItem = { name: string; component: React.FC };
+type ComponentItem = {
+  name: string;
+  bookName?: string;  // Optional bookName
+  authorName?: string; // Optional authorName
+  uri?: string;        // Optional uri
+  component: React.FC<{ bookName?: string; authorName?: string }>;
+};
 
 function keyExtractor(item: ComponentItem) {
   return item.name;
@@ -108,7 +114,8 @@ function renderItemSeparator() {
 function renderItem({ item }: { item: ComponentItem }) {
   return (
     <Card title={item.name}>
-      <item.component />
+      {/* bookName ve authorName doğru şekilde geçiyor mu? */}
+      <item.component bookName={item.bookName} authorName={item.authorName} />
     </Card>
   );
 }
@@ -116,8 +123,7 @@ function renderItem({ item }: { item: ComponentItem }) {
 function Card({ children, title }: { children: React.ReactNode; title: string }) {
   return (
     <View className="px-4">
-      <View className="gap-4 rounded-xl border border-border bg-card p-4 pb-6 shadow-sm shadow-black/10 dark:shadow-none">
-        <Text className="text-center text-sm font-medium tracking-wider opacity-60">{title}</Text>
+      <View className="gap-1 rounded-xl border border-border bg-card p-4 pb-6 shadow shadow-black/100 dark:shadow-hidden">
         {children}
       </View>
     </View>
@@ -130,36 +136,39 @@ let hasRequestedReview = false;
 //Kitaplar kodu
 const COMPONENTS: ComponentItem[] = [
   {
-    name: 'George Orwell',
-    component: function TextExample() {
-      return (
-        <View className="flex-row">
-          {/* Kitap kapağı */}
+    name: '1984',
+    bookName: '1984',
+    authorName: 'George Orwell',
+    component: ({ bookName, authorName }) => (
+      <Link href="/bookscreen" asChild>
+      <TouchableOpacity className="flex-row">
+        
+        {/* Sadece resme özel link */}
+        <Link href="/pdfscreen" asChild>
           <TouchableOpacity>
-            <Link href="/pages/bookscreen">
-              <Image
-                source={{
-                  uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
-                }}
-                style={{ width: 100, height: 100, resizeMode: 'contain' }}
-              />
-            </Link>
+            <Image
+              source={{
+                uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
+              }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            />
           </TouchableOpacity>
+        </Link>
 
-          {/* Sağ taraf */}
-          <View className="flex-1 flex-col justify-between ml-4">
-            <Text className="text-lg font-semibold">Nineteen-Eighty-Four</Text>
-            {/* Progress bar ve oran */}
-            <View>
-              <ProgressIndicator className="" value={33} />
-            </View>
-          </View>
+        {/* Yazılar ve progress */}
+        <View className="flex-1 justify-between">
+          <Text className="text-lg font-semibold">{bookName}</Text>
+          <Text className="text-sm text-gray-500">{authorName}</Text>
+          <ProgressIndicator value={50} />
         </View>
-      );
-    },
+      </TouchableOpacity>
+    </Link>
+    ),
   },
   {
     name: 'Mustafa Kemal Atatürk',
+    bookName: 'Nutuk',
+    authorName: 'Mustafa Kemal Atatürk',
     component: function TextExample() {
       return (
         <View className="flex-row">
@@ -171,7 +180,7 @@ const COMPONENTS: ComponentItem[] = [
               style={{ width: 100, height: 100, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
-          <View className="flex-1 flex-col justify-between ml-4">
+          <View className="flex-1  flex-col justify-between ml-4">
           <Text className="text-lg font-semibold"> Nutuk </Text>
             <View>
               <ProgressIndicator value={85} />
@@ -183,6 +192,8 @@ const COMPONENTS: ComponentItem[] = [
   },
   {
     name: 'Daniel Kahneman',
+    bookName: 'Thinking, Fast and Slow',
+    authorName: 'Daniel Kahneman',
     component: function TextExample() {
       return (
         <View className="flex-row gap-2">
@@ -206,6 +217,8 @@ const COMPONENTS: ComponentItem[] = [
   },
   {
     name: 'James Clear',
+    bookName: 'Atomic Habits',
+    authorName: 'James Clear',
     component: function TextExample() {
       return (
         <View className="flex-row gap-2">
