@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { FontAwesome, FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LegendList } from '@legendapp/list';
 import { Button, useHeaderHeight } from '@react-navigation/elements';
+import { useTheme } from '@react-navigation/native';
 import { Icon } from '@roninoss/icons';
 import { Link } from 'expo-router'; // Link bileşenini ekleyin
 import * as StoreReview from 'expo-store-review';
@@ -19,6 +21,8 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  Modal,
+  Pressable
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -38,7 +42,7 @@ cssInterop(LegendList, {
 
 function DefaultButton({ color, ...props }: ButtonProps) {
   const { colors } = useColorScheme();
-  return <RNButton color={color ?? colors.primary} {...props} />;
+  return <RNButton color={color ?? colors.grey} {...props} />;
 }
 
 export default function Screen() {
@@ -100,7 +104,8 @@ type ComponentItem = {
   bookName?: string;  // Optional bookName
   authorName?: string; // Optional authorName
   uri?: string;        // Optional uri
-  component: React.FC<{ bookName?: string; authorName?: string }>;
+  pdfInput?: string;    // Optional pdfUrl
+  component: React.FC<{ bookName?: string; authorName?: string; pdfInput?: string }>;
 };
 
 function keyExtractor(item: ComponentItem) {
@@ -114,8 +119,8 @@ function renderItemSeparator() {
 function renderItem({ item }: { item: ComponentItem }) {
   return (
     <Card title={item.name}>
-      {/* bookName ve authorName doğru şekilde geçiyor mu? */}
-      <item.component bookName={item.bookName} authorName={item.authorName} />
+      {/* Does bookName and authorName work correctly? */}
+      <item.component bookName={item.bookName} authorName={item.authorName} pdfInput={item.pdfInput} />
     </Card>
   );
 }
@@ -133,109 +138,74 @@ function Card({ children, title }: { children: React.ReactNode; title: string })
 let hasRequestedReview = false;
 
 
-//Kitaplar kodu
+//Books code
 const COMPONENTS: ComponentItem[] = [
   {
     name: '1984',
     bookName: '1984',
     authorName: 'George Orwell',
-    component: ({ bookName, authorName }) => (
-      <Link href="/bookscreen" asChild>
-      <TouchableOpacity className="flex-row">
-        
-        {/* Sadece resme özel link */}
-        <Link href="/pdfscreen" asChild>
-          <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
-              }}
-              style={{ width: 100, height: 100, resizeMode: 'contain' }}
-            />
-          </TouchableOpacity>
-        </Link>
+    component: function Component({ bookName, authorName, pdfInput }) {
+    const [menuVisible, setMenuVisible] = React.useState(false);
+    const { colors } = useColorScheme();
+  
+    return (
+      <View className="flex-row items-center justify-between">
+        <Link href="/bookscreen" asChild>
+          <TouchableOpacity className="flex-row items-left gap-4">
+            
+            {/* BookCover */}
+            <Link
+              href={{ pathname: '/pdfscreen', params: { pdfUrl: pdfInput } }}
+              asChild
+            >
+              <TouchableOpacity>
+                <Image
+                  source={{
+                    uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
+                  }}
+                  style={{ width: 90, height: 130, resizeMode: 'contain' }}
+                />
+              </TouchableOpacity>
+            </Link>
+  
+            {/* Right side: Texts and Icons */}
+          <View className="flex-1 ml-2 gap-3 justify-between">
+            <View className="flex-col">
+              <Text className="text-lg font-semibold">{bookName}</Text>
+              <Text className="text-sm text-gray-500">{authorName}</Text>
+            </View>
 
-        {/* Yazılar ve progress */}
-        <View className="flex-1 justify-between">
-          <Text className="text-lg font-semibold">{bookName}</Text>
-          <Text className="text-sm text-gray-500">{authorName}</Text>
-          <ProgressIndicator value={50} />
-        </View>
-      </TouchableOpacity>
-    </Link>
-    ),
-  },
-  {
-    name: 'Mustafa Kemal Atatürk',
-    bookName: 'Nutuk',
-    authorName: 'Mustafa Kemal Atatürk',
-    component: function TextExample() {
-      return (
-        <View className="flex-row">
-          <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://img.kitapyurdu.com/v1/getImage/fn:4060202/wh:true/wi:800',
-              }}
-              style={{ width: 100, height: 100, resizeMode: 'contain' }}
-            />
-          </TouchableOpacity>
-          <View className="flex-1  flex-col justify-between ml-4">
-          <Text className="text-lg font-semibold"> Nutuk </Text>
-            <View>
-              <ProgressIndicator value={85} />
+              {/* Icons */}
+              <View className="flex-col gap-3">
+              <View className="flex-row items-center space-x-10 gap-6">
+                <TouchableOpacity>
+                <FontAwesome name="star-o" size={25} color={colors.grey} />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                <FontAwesome5 name="clock" size={25} color={colors.grey} />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                <MaterialCommunityIcons name="read" size={25} color={colors.grey} />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                <MaterialIcons name="library-add" size={25} color={colors.grey} />
+                </TouchableOpacity>
+                {/*<TouchableOpacity>
+                 <MaterialIcons name="library-add-check" size={25} color={colors.grey} />
+                </TouchableOpacity> */}
+
+                <TouchableOpacity>{/* onPress={() => setMenuVisible(true)} */}
+                  <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />
+                </TouchableOpacity>
+              </View>
+  
+              {/* ProgressBar */}
+              <ProgressIndicator value={50} />
             </View>
           </View>
-        </View>
-      );
-    },
-  },
-  {
-    name: 'Daniel Kahneman',
-    bookName: 'Thinking, Fast and Slow',
-    authorName: 'Daniel Kahneman',
-    component: function TextExample() {
-      return (
-        <View className="flex-row gap-2">
-            <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1317793965i/11468377.jpg',
-              }}
-              style={{ width: 100, height: 100, resizeMode: 'contain' }}
-            />
-            </TouchableOpacity>
-            <View className="flex-1 flex-col justify-between ml-4">
-          <Text className="text-lg font-semibold"> Thinking, Fast and Slow </Text>
-            <View>
-              <ProgressIndicator value={9} />
-            </View>
-          </View>
-        </View>
-      );
-    },
-  },
-  {
-    name: 'James Clear',
-    bookName: 'Atomic Habits',
-    authorName: 'James Clear',
-    component: function TextExample() {
-      return (
-        <View className="flex-row gap-2">
-            <TouchableOpacity onPress={() => Alert.alert('Resme tıklandı!')}>
-            <Image
-              source={{
-              uri: 'https://m.media-amazon.com/images/I/81ANaVZk5LL._AC_UF1000,1000_QL80_.jpg',
-              }}
-              style={{ width: 100, height: 100, resizeMode: 'contain' }}
-            />
-            </TouchableOpacity>
-            <View className="flex-1 flex-col justify-between ml-4">
-          <Text className="text-lg font-semibold"> Atomic Habits </Text>
-            <View>
-              <ProgressIndicator value={5} />
-            </View>
-          </View>
+            {/* Dropboxmenu */}
+        </TouchableOpacity>
+        </Link>
         </View>
       );
     },
