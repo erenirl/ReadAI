@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 const books = [

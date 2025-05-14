@@ -147,12 +147,19 @@ const COMPONENTS: ComponentItem[] = [
     pdfInput: 'https://www.gutenberg.org/files/1342/1342-0.txt',
     component: function Component({ bookName, authorName, pdfInput }) {
     const { colors } = useColorScheme();
-    const [showHint, setShowHint] = React.useState(false);
 
-    const iconLongPress = () => {
-      setShowHint(true);
+    const icons = [
+      { icon: <FontAwesome name="star-o" size={25} color={colors.grey} />, label: 'Add to Favorites' },
+      { icon: <FontAwesome5 name="clock" size={25} color={colors.grey} />, label: 'Add to Read Later' },
+      { icon: <MaterialCommunityIcons name="read" size={25} color={colors.grey} />, label: 'Mark as read' },
+      { icon: <MaterialIcons name="library-add" size={25} color={colors.grey} />, label: 'Add to collection' },
+      { icon: <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />, label: 'More Options' },
+    ];
+    const [hintText, setHintText] = React.useState<string | null>(null);
+    const showHint = (label: string) => {
+      setHintText(label);
       setTimeout(() => {
-        setShowHint(false);
+        setHintText(null);
       }, 2000);
     };
   
@@ -181,29 +188,22 @@ const COMPONENTS: ComponentItem[] = [
               </View>
 
                 {/* Icons */}
-                <View className="flex-col gap-3">
-                  <View className="flex-row items-center space-x-10 gap-6">
-                    <TouchableOpacity onLongPress={iconLongPress}>
-                    <FontAwesome name="star-o" size={25} color={colors.grey} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                    <FontAwesome5 name="clock" size={25} color={colors.grey} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                    <MaterialCommunityIcons name="read" size={25} color={colors.grey} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                    <MaterialIcons name="library-add" size={25} color={colors.grey} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />
-                    </TouchableOpacity>
+                <View className='flex-col gap-3'>
+                <View className="flex-row">
+                  {icons.map(({ icon, label }, index) => (
+                    <View key={index} className="mr-7">
+                      <TouchableOpacity onLongPress={() => showHint(label)}>
+                        {icon}
+                      </TouchableOpacity>
+                      {hintText === label && <Text className="text-xs mt-1 text-gray-500">{label}</Text>}
                   </View>
+                  ))}
+                </View>
                 {/* ProgressBar */}
-                <ProgressIndicator value={50} />
+                <ProgressIndicator value={23} />
               </View>
             </View>
-              {/* Dropboxmenu */}
+              {/* Dropviewmenu */}
           </TouchableOpacity>
         </Link>
       </View>
