@@ -5,7 +5,7 @@ import { LegendList } from '@legendapp/list';
 import { Button, useHeaderHeight } from '@react-navigation/elements';
 import { useTheme } from '@react-navigation/native';
 import { Icon } from '@roninoss/icons';
-import { Link } from 'expo-router'; // Link bileşenini ekleyin
+import { Link } from 'expo-router';
 import * as StoreReview from 'expo-store-review';
 import { cssInterop } from 'nativewind';
 import * as React from 'react';
@@ -141,12 +141,20 @@ let hasRequestedReview = false;
 //Books code
 const COMPONENTS: ComponentItem[] = [
   {
-    name: '1984',
+    name: '1',
     bookName: '1984',
     authorName: 'George Orwell',
+    pdfInput: 'https://www.gutenberg.org/files/1342/1342-0.txt',
     component: function Component({ bookName, authorName, pdfInput }) {
-    const [menuVisible, setMenuVisible] = React.useState(false);
     const { colors } = useColorScheme();
+    const [showHint, setShowHint] = React.useState(false);
+
+    const iconLongPress = () => {
+      setShowHint(true);
+      setTimeout(() => {
+        setShowHint(false);
+      }, 2000);
+    };
   
     return (
       <View className="flex-row items-center justify-between">
@@ -154,10 +162,7 @@ const COMPONENTS: ComponentItem[] = [
           <TouchableOpacity className="flex-row items-left gap-4">
             
             {/* BookCover */}
-            <Link
-              href={{ pathname: '/pdfscreen', params: { pdfUrl: pdfInput } }}
-              asChild
-            >
+            <Link href={{ pathname: '/pdfscreen', params: { pdfUrl: pdfInput } }} asChild>
               <TouchableOpacity>
                 <Image
                   source={{
@@ -168,45 +173,40 @@ const COMPONENTS: ComponentItem[] = [
               </TouchableOpacity>
             </Link>
   
-            {/* Right side: Texts and Icons */}
-          <View className="flex-1 ml-2 gap-3 justify-between">
-            <View className="flex-col">
-              <Text className="text-lg font-semibold">{bookName}</Text>
-              <Text className="text-sm text-gray-500">{authorName}</Text>
-            </View>
-
-              {/* Icons */}
-              <View className="flex-col gap-3">
-              <View className="flex-row items-center space-x-10 gap-6">
-                <TouchableOpacity>
-                <FontAwesome name="star-o" size={25} color={colors.grey} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <FontAwesome5 name="clock" size={25} color={colors.grey} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <MaterialCommunityIcons name="read" size={25} color={colors.grey} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <MaterialIcons name="library-add" size={25} color={colors.grey} />
-                </TouchableOpacity>
-                {/*<TouchableOpacity>
-                 <MaterialIcons name="library-add-check" size={25} color={colors.grey} />
-                </TouchableOpacity> */}
-
-                <TouchableOpacity>{/* onPress={() => setMenuVisible(true)} */}
-                  <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />
-                </TouchableOpacity>
+              {/* Right side: Texts and Icons */}
+            <View className="flex-1 ml-2 gap-3 justify-between">
+              <View className="flex-col">
+                <Text className="text-lg font-semibold">{bookName}</Text>
+                <Text className="text-sm text-gray-500">{authorName}</Text>
               </View>
-  
-              {/* ProgressBar */}
-              <ProgressIndicator value={50} />
+
+                {/* Icons */}
+                <View className="flex-col gap-3">
+                  <View className="flex-row items-center space-x-10 gap-6">
+                    <TouchableOpacity onLongPress={iconLongPress}>
+                    <FontAwesome name="star-o" size={25} color={colors.grey} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                    <FontAwesome5 name="clock" size={25} color={colors.grey} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                    <MaterialCommunityIcons name="read" size={25} color={colors.grey} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                    <MaterialIcons name="library-add" size={25} color={colors.grey} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />
+                    </TouchableOpacity>
+                  </View>
+                {/* ProgressBar */}
+                <ProgressIndicator value={50} />
+              </View>
             </View>
-          </View>
-            {/* Dropboxmenu */}
-        </TouchableOpacity>
+              {/* Dropboxmenu */}
+          </TouchableOpacity>
         </Link>
-        </View>
+      </View>
       );
     },
   },
