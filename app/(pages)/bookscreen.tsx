@@ -2,6 +2,7 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { LegendList } from '@legendapp/list';
 import { Button, useHeaderHeight } from '@react-navigation/elements';
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@roninoss/icons';
 import * as StoreReview from 'expo-store-review';
 import { cssInterop } from 'nativewind';
@@ -19,7 +20,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { TextInput } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
@@ -33,7 +34,6 @@ import { Text } from '~/components/nativewindui/Text';
 import { Toggle } from '~/components/nativewindui/Toggle';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { useHeaderSearchBar } from '~/lib/useHeaderSearchBar';
-import { TextInput } from 'react-native-gesture-handler';
 cssInterop(LegendList, {
   className: 'style',
   contentContainerClassName: 'contentContainerStyle',

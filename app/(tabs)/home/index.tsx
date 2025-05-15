@@ -1,6 +1,10 @@
-/* eslint-disable prettier/prettier */
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { FontAwesome, FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  FontAwesome5,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import { LegendList } from '@legendapp/list';
 import { Button, useHeaderHeight } from '@react-navigation/elements';
 import { useTheme } from '@react-navigation/native';
@@ -22,7 +26,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Modal,
-  Pressable
+  Pressable,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -101,10 +105,10 @@ function ListEmptyComponent() {
 
 type ComponentItem = {
   name: string;
-  bookName?: string;  // Optional bookName
+  bookName?: string; // Optional bookName
   authorName?: string; // Optional authorName
-  uri?: string;        // Optional uri
-  pdfInput?: string;    // Optional pdfUrl
+  uri?: string; // Optional uri
+  pdfInput?: string; // Optional pdfUrl
   component: React.FC<{ bookName?: string; authorName?: string; pdfInput?: string }>;
 };
 
@@ -120,7 +124,11 @@ function renderItem({ item }: { item: ComponentItem }) {
   return (
     <Card title={item.name}>
       {/* Does bookName and authorName work correctly? */}
-      <item.component bookName={item.bookName} authorName={item.authorName} pdfInput={item.pdfInput} />
+      <item.component
+        bookName={item.bookName}
+        authorName={item.authorName}
+        pdfInput={item.pdfInput}
+      />
     </Card>
   );
 }
@@ -128,7 +136,7 @@ function renderItem({ item }: { item: ComponentItem }) {
 function Card({ children, title }: { children: React.ReactNode; title: string }) {
   return (
     <View className="px-4">
-      <View className="gap-1 rounded-xl border border-border bg-card p-4 pb-6 shadow shadow-black/100 dark:shadow-hidden">
+      <View className="dark:shadow-hidden gap-1 rounded-xl border border-border bg-card p-4 pb-6 shadow shadow-black/100">
         {children}
       </View>
     </View>
@@ -136,7 +144,6 @@ function Card({ children, title }: { children: React.ReactNode; title: string })
 }
 
 let hasRequestedReview = false;
-
 
 //Books code
 const COMPONENTS: ComponentItem[] = [
@@ -146,67 +153,83 @@ const COMPONENTS: ComponentItem[] = [
     authorName: 'George Orwell',
     pdfInput: 'https://www.gutenberg.org/files/1342/1342-0.txt',
     component: function Component({ bookName, authorName, pdfInput }) {
-    const { colors } = useColorScheme();
+      const { colors } = useColorScheme();
 
-    const icons = [
-      { icon: <FontAwesome name="star-o" size={25} color={colors.grey} />, label: 'Add to Favorites' },
-      { icon: <FontAwesome5 name="clock" size={25} color={colors.grey} />, label: 'Add to Read Later' },
-      { icon: <MaterialCommunityIcons name="read" size={25} color={colors.grey} />, label: 'Mark as read' },
-      { icon: <MaterialIcons name="library-add" size={25} color={colors.grey} />, label: 'Add to collection' },
-      { icon: <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />, label: 'More Options' },
-    ];
-    const [hintText, setHintText] = React.useState<string | null>(null);
-    const showHint = (label: string) => {
-      setHintText(label);
-      setTimeout(() => {
-        setHintText(null);
-      }, 2000);
-    };
-  
-    return (
-      <View className="flex-row items-center justify-between">
-        <Link href="/bookscreen" asChild>
-          <TouchableOpacity className="flex-row items-left gap-4">
-            
-            {/* BookCover */}
-            <Link href={{ pathname: '/pdfscreen', params: { pdfUrl: pdfInput } }} asChild>
-              <TouchableOpacity>
-                <Image
-                  source={{
-                    uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
-                  }}
-                  style={{ width: 90, height: 130, resizeMode: 'contain' }}
-                />
-              </TouchableOpacity>
-            </Link>
-  
+      const icons = [
+        {
+          icon: <FontAwesome name="star-o" size={25} color={colors.grey} />,
+          label: 'Add to Favorites',
+        },
+        {
+          icon: <FontAwesome5 name="clock" size={25} color={colors.grey} />,
+          label: 'Add to Read Later',
+        },
+        {
+          icon: <MaterialCommunityIcons name="read" size={25} color={colors.grey} />,
+          label: 'Mark as read',
+        },
+        {
+          icon: <MaterialIcons name="library-add" size={25} color={colors.grey} />,
+          label: 'Add to collection',
+        },
+        {
+          icon: <MaterialCommunityIcons name="dots-vertical" size={25} color={colors.grey} />,
+          label: 'More Options',
+        },
+      ];
+      const [hintText, setHintText] = React.useState<string | null>(null);
+      const showHint = (label: string) => {
+        setHintText(label);
+        setTimeout(() => {
+          setHintText(null);
+        }, 2000);
+      };
+
+      return (
+        <View className="flex-row items-center justify-between">
+          <Link href="/bookscreen" asChild>
+            <TouchableOpacity className="items-left flex-row gap-4">
+              {/* BookCover */}
+              <Link href={{ pathname: '/pdfscreen', params: { pdfUrl: pdfInput } }} asChild>
+                <TouchableOpacity>
+                  <Image
+                    source={{
+                      uri: 'https://img.kitapyurdu.com/v1/getImage/fn:11484453/wh:true/miw:200/mih:200',
+                    }}
+                    style={{ width: 90, height: 130, resizeMode: 'contain' }}
+                  />
+                </TouchableOpacity>
+              </Link>
+
               {/* Right side: Texts and Icons */}
-            <View className="flex-1 ml-2 gap-3 justify-between">
-              <View className="flex-col">
-                <Text className="text-lg font-semibold">{bookName}</Text>
-                <Text className="text-sm text-gray-500">{authorName}</Text>
-              </View>
+              <View className="ml-2 flex-1 justify-between gap-3">
+                <View className="flex-col">
+                  <Text className="text-lg font-semibold">{bookName}</Text>
+                  <Text className="text-sm text-gray-500">{authorName}</Text>
+                </View>
 
                 {/* Icons */}
-                <View className='flex-col gap-3'>
-                <View className="flex-row">
-                  {icons.map(({ icon, label }, index) => (
-                    <View key={index} className="mr-7">
-                      <TouchableOpacity onLongPress={() => showHint(label)}>
-                        {icon}
-                      </TouchableOpacity>
-                      {hintText === label && <Text className="text-xs mt-1 text-gray-500">{label}</Text>}
+                <View className="flex-col gap-3">
+                  <View className="flex-row">
+                    {icons.map(({ icon, label }, index) => (
+                      <View key={index} className="mr-7">
+                        <TouchableOpacity onLongPress={() => showHint(label)}>
+                          {icon}
+                        </TouchableOpacity>
+                        {hintText === label && (
+                          <Text className="mt-1 text-xs text-gray-500">{label}</Text>
+                        )}
+                      </View>
+                    ))}
                   </View>
-                  ))}
+                  {/* ProgressBar */}
+                  <ProgressIndicator value={23} />
                 </View>
-                {/* ProgressBar */}
-                <ProgressIndicator value={23} />
               </View>
-            </View>
               {/* Dropviewmenu */}
-          </TouchableOpacity>
-        </Link>
-      </View>
+            </TouchableOpacity>
+          </Link>
+        </View>
       );
     },
   },

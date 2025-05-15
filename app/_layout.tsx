@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import '../global.css';
 import 'expo-dev-client';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -15,7 +14,6 @@ import { cn } from '~/lib/cn';
 import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { NAV_THEME } from '~/theme';
 
-
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -24,8 +22,8 @@ export {
 //bura napiyor bilmiyoruz
 const StackLayout = () => {
   return (
-    <Stack> 
-      <Stack.Screen name="(tabs)" options={{ title: "aa", headerShown: false}} />
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ title: 'aa', headerShown: false }} />
     </Stack>
   );
 };
@@ -52,7 +50,7 @@ export default function RootLayout() {
                 <Stack.Screen name="modal" options={MODAL_OPTIONS} />
                 <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
                 <Stack.Screen name="library" options={LIBRARY_OPTIONS} />
-                <Stack.Screen name="(pages)/pdfscreen" options={{headerShown:false}} />
+                <Stack.Screen name="(pages)/pdfscreen" options={{ headerShown: false }} />
               </Stack>
             </NavThemeProvider>
           </ActionSheetProvider>
@@ -85,7 +83,6 @@ const LIBRARY_OPTIONS = {
   title: 'aLL bS',
   headerRight: () => <SettingsIcon />,
 } as const;
-
 
 function SettingsIcon() {
   const { colors } = useColorScheme();

@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
+import { useLocalSearchParams } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { StatusBar } from 'expo-status-bar';
 
-import { useLocalSearchParams } from 'expo-router';
 
 export default function PdfScreen() {
   
