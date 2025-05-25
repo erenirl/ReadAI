@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Platform } from 'react-native';
+import { green } from 'react-native-reanimated/lib/typescript/Colors';
 
 const IOS_SYSTEM_COLORS = {
   white: 'rgb(255, 255, 255)',
@@ -17,6 +18,7 @@ const IOS_SYSTEM_COLORS = {
     card: 'rgb(255, 255, 255)',
     destructive: 'rgb(255, 56, 43)',
     primary: 'rgb(0, 123, 254)',
+    green1: 'rgb(9, 207, 35)',
   },
   dark: {
     grey6: 'rgb(21, 21, 24)',
@@ -31,6 +33,7 @@ const IOS_SYSTEM_COLORS = {
     card: 'rgb(28, 28, 30)',
     destructive: 'rgb(254, 67, 54)',
     primary: 'rgb(3, 133, 255)',
+    green1: 'rgba(9, 207, 35, 0.8)',
   },
 } as const;
 
@@ -50,6 +53,7 @@ const ANDROID_COLORS = {
     card: 'rgb(255, 255, 255)',
     destructive: 'rgb(186, 26, 26)',
     primary: 'rgb(0, 112, 233)',
+    green1: 'rgb(9, 207, 35)',
   },
   dark: {
     grey6: 'rgb(16, 19, 27)',
@@ -64,6 +68,7 @@ const ANDROID_COLORS = {
     card: 'rgb(16, 19, 27)',
     destructive: 'rgb(147, 0, 10)',
     primary: 'rgb(3, 133, 255)',
+    green1: 'rgba(9, 207, 35, 0.8)',
   },
 } as const;
 

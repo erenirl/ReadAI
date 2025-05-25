@@ -21,6 +21,7 @@ export default () => {
                 name="library"
                 options={{
                     title: "Library",
+                    headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="bookshelf" color={color} size={size} />
                     ),
@@ -30,6 +31,7 @@ export default () => {
                 name="GeneralAiChat"
                 options={{
                     title: "AI Chat",
+                    headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                     <Entypo name="chat" color={color} size={size} />
                     ),

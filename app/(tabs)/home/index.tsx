@@ -10,6 +10,7 @@ import { Button, useHeaderHeight } from '@react-navigation/elements';
 import { useTheme } from '@react-navigation/native';
 import { Icon } from '@roninoss/icons';
 import { Link } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
 import * as StoreReview from 'expo-store-review';
 import { cssInterop } from 'nativewind';
 import * as React from 'react';
@@ -27,12 +28,13 @@ import {
   SafeAreaView,
   Modal,
   Pressable,
+  ProgressBarAndroidBase,
 } from 'react-native';
+import * as Progress from 'react-native-progress';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/nativewindui/Avatar';
-import { ProgressIndicator } from '~/components/nativewindui/ProgressIndicator';
 import { Sheet, useSheetRef } from '~/components/nativewindui/Sheet';
 import { Text } from '~/components/nativewindui/Text';
 import { Toggle } from '~/components/nativewindui/Toggle';
@@ -143,7 +145,7 @@ function Card({ children, title }: { children: React.ReactNode; title: string })
   );
 }
 
-let hasRequestedReview = false;
+const hasRequestedReview = false;
 
 //Books code
 const COMPONENTS: ComponentItem[] = [
@@ -223,7 +225,15 @@ const COMPONENTS: ComponentItem[] = [
                     ))}
                   </View>
                   {/* ProgressBar */}
-                  <ProgressIndicator value={23} />
+                  <Progress.Bar
+                    progress={0.23}
+                    width={null}
+                    height={3}
+                    color={colors.green1}
+                    unfilledColor={colors.grey4}
+                    borderWidth={0}
+                    borderRadius={10}
+                  />
                 </View>
               </View>
               {/* Dropviewmenu */}

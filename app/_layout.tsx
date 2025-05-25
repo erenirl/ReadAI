@@ -5,6 +5,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider as NavThemeProvider } from '@react-navigation/native';
 import { Icon } from '@roninoss/icons';
 import { Link, Stack } from 'expo-router';
+import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -33,7 +34,7 @@ export default function RootLayout() {
   const { colorScheme, isDarkColorScheme } = useColorScheme();
 
   return (
-    <>
+    <SQLiteProvider databaseName="lib/booksdb">
       <StatusBar
         key={`root-status-bar-${isDarkColorScheme ? 'light' : 'dark'}`}
         style={isDarkColorScheme ? 'light' : 'dark'}
@@ -49,16 +50,14 @@ export default function RootLayout() {
                 <Stack.Screen name="index" options={INDEX_OPTIONS} />
                 <Stack.Screen name="modal" options={MODAL_OPTIONS} />
                 <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
-                <Stack.Screen name="library" options={LIBRARY_OPTIONS} />
+                <Stack.Screen name="(tabs)/library" options={LIBRARY_OPTIONS} />
                 <Stack.Screen name="(pages)/pdfscreen" options={{ headerShown: false }} />
               </Stack>
             </NavThemeProvider>
           </ActionSheetProvider>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
-
-      {/* </ExampleProvider> */}
-    </>
+    </SQLiteProvider>
   );
 }
 
@@ -80,6 +79,7 @@ const TABS_OPTIONS = {
 
 const LIBRARY_OPTIONS = {
   headerLargeTitle: true,
+  headerShown: false,
   title: 'aLL bS',
   headerRight: () => <SettingsIcon />,
 } as const;
